@@ -1,3 +1,5 @@
+import { addToCart } from "./cart.js";
+
 export function showModal(product) {
     let modal = document.querySelector("#modal");
 
@@ -24,7 +26,7 @@ export function showModal(product) {
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Agregar al carrito</button>
+                    <button type="button" class="btn btn-primary" id="add-to-cart-btn">Agregar al carrito</button>
                 </div>
             </div>
         </div>
@@ -34,4 +36,10 @@ export function showModal(product) {
 
     const myModal = new bootstrap.Modal(modal);
     myModal.show();
+    
+    // agrego el evento al botón de agregar al carrito
+    // el evento se agrega después de que se muestra el modal para evitar problemas de referencia
+    document.querySelector("#add-to-cart-btn").addEventListener("click", () => {
+        addToCart(product);
+    });
 }

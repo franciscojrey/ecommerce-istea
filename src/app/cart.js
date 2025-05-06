@@ -30,7 +30,7 @@ export function renderCart() {
                 <button class="btn btn-sm btn-outline-secondary" onclick='decrementProd("${p.id}")' ${p.quantity === 1 ? "disabled" : ""}>-</button>
                 <span id= "qty-${p.id}">${p.quantity}</span>
                 <button class="btn btn-sm btn-outline-secondary" onclick='incrementProd("${p.id}")'>+</button>  
-                <button class="btn btn-sm btn-danger ms-2" onclick='removeProd("${p.id}")'>Eliminar</button>
+                <button class="btn btn-sm btn-outline-danger" onclick='removeProd("${p.id}")'>Eliminar</button>
             </div>
         </div>
         `).join("");

@@ -38,7 +38,6 @@ export function showModal(product) {
     myModal.show();
     
     // agrego el evento al botón de agregar al carrito
-    // el evento se agrega después de que se muestra el modal para evitar problemas de referencia
     document.querySelector("#add-to-cart-btn").addEventListener("click", () => {
         addToCart(product);
     });

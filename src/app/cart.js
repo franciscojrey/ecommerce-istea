@@ -1,11 +1,13 @@
+import { restQttyProd, sumQttyProd, removeProd} from "../utils/update.js";
 
+// Función para agregar un producto al carrito
 export function addToCart(product) {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    cart.push(product);
-    localStorage.setItem("cart", JSON.stringify(cart));
+    let qty = sumQttyProd(product);
     alert("Producto agregado al carrito");
+    return qty;
 }
 
+// Función para mostrar el carrito en el offcanvas
 export function renderCart() {
     const offcanvasBody = document.querySelector(".offcanvas-body");
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -16,13 +18,62 @@ export function renderCart() {
         return;
     }
 
+    //carrito con productos
     offcanvasBody.innerHTML = cart.map(p => `
         <div class="cart-item">
             <img src="${p.image}" alt="${p.title}">
             <div class="cart-item-details">
                 <p class="cart-item-title">${p.title}</p>
-                <p class="cart-item-price">$${p.price}</p>
+                <p class="cart-item-price" id="total-${p.id}">Total: $${p.price * p.quantity}</p>
+            </div>
+            <div class="cart-item-quantity">
+                <button class="btn btn-sm btn-outline-secondary" onclick='decrementProd("${p.id}")' ${p.quantity === 1 ? "disabled" : ""}>-</button>
+                <span id= "qty-${p.id}">${p.quantity}</span>
+                <button class="btn btn-sm btn-outline-secondary" onclick='incrementProd("${p.id}")'>+</button>  
+                <button class="btn btn-sm btn-danger ms-2" onclick='removeProd("${p.id}")'>Eliminar</button>
             </div>
         </div>
-    `).join("");
+        `).join("");
+        
+        
+        //sumar productos al carrito
+        window.incrementProd = (id) => {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const product = cart.find(p => p.id === id || p.id === Number(id));
+            if (!product) return;
+        
+            const qty = sumQttyProd(product);
+            document.querySelector(`#qty-${id}`).innerText = qty;
+            document.querySelector(`button[onclick="decrementProd('${id}')"]`)?.removeAttribute("disabled");
+
+            let totalElement = document.querySelector(`#total-${id}`);
+            totalElement.innerHTML = "";
+            totalElement.innerHTML = `Total: $${product.price * qty}`;
+            renderCart();
+        };
+        
+        //restar productos al carrito
+        window.decrementProd = (id) => {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const product = cart.find(p => p.id === id || p.id === Number(id));
+            if (!product) return;
+        
+            const qty = restQttyProd(product);
+            document.querySelector(`#qty-${id}`).innerText = qty;
+            if (qty === 1) {
+                document.querySelector(`button[onclick="decrementProd('${id}')"]`)?.setAttribute("disabled", true);
+            }
+
+            let totalElement = document.querySelector(`#total-${id}`);
+            totalElement.innerHTML = "";
+            totalElement.innerHTML = `Total: $${product.price * qty}`;
+            renderCart();
+        };
+        
+        //eliminar productos del carrito
+        window.removeProd = (id) => {
+            //TODO: se borra el ultimo producto y no el querido
+            removeProd(id);
+            renderCart();  
+        };
 }

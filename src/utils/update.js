@@ -1,7 +1,14 @@
+function getCart() {
+    return JSON.parse(localStorage.getItem("cart")) || [];
+}
+
+function setCart(cart) {
+    localStorage.setItem("cart", JSON.stringify(cart));
+}
 
 export function sumQttyProd(product) {
     // leyendo del localStorage,parseando y guardando en una variable
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let cart = getCart();
     let indexLs = cart.findIndex(p => p.id === product.id);
 
     if (indexLs === -1) {
@@ -13,7 +20,7 @@ export function sumQttyProd(product) {
     }
 
     // guardando el array en el localStorage
-    localStorage.setItem("cart", JSON.stringify(cart));
+    setCart(cart) 
     if (indexLs !== -1) {
         return cart[indexLs].quantity;
     }
@@ -21,22 +28,29 @@ export function sumQttyProd(product) {
 
 
 export function restQttyProd(product) {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let cart = getCart();
 
     let indexLs = cart.findIndex(p => p.id === product.id);
     if (indexLs !== -1 && cart[indexLs].quantity > 1) {
         cart[indexLs].quantity--;
     }
 
-    localStorage.setItem("cart", JSON.stringify(cart));
+    setCart(cart) 
     return cart[indexLs].quantity;
 }
 
 
-export function removeProd(product) {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    let indexLs = cart.findIndex(p => p.id === product.id);
+export function removeProd(id) {
+    let cart = getCart();
+    let indexLs = cart.findIndex(p => p.id === id || p.id === Number(id)); // por si el id es string o número
 
-    cart.splice(indexLs,);
-    localStorage.setItem("cart", JSON.stringify(cart));
+    if (indexLs !== -1) {
+        cart.splice(indexLs, 1);
+        setCart(cart) 
+    }
 }
+
+export function clearCart() {
+    localStorage.removeItem("cart");
+}
+

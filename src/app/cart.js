@@ -76,15 +76,26 @@ export function renderCart() {
         renderCart();  
     };
 
-    offcanvasBody.innerHTML += `
-    <div class="mt-3 text-end">
-        <button class="btn btn-danger btn-sm" id="clear-cart-btn">Vaciar carrito</button>
-    </div>
-    `;
 
+    offcanvasBody.innerHTML += `
+    <div class="mt-3 text-end d-flex gap-2 justify-content-end">
+        <button class="btn btn-danger btn-sm" id="clear-cart-btn">Vaciar carrito</button>
+        <button class="btn btn-success btn-sm" id="checkout-btn">Finalizar compra</button>
+    </div>
+`;
+
+
+    // Vaciar carrito
     document.querySelector("#clear-cart-btn")?.addEventListener("click", () => {
         clearCart();
         renderCart();
     });
-    
+
+    // Finalizar compra
+    document.querySelector("#checkout-btn")?.addEventListener("click", () => {
+        alert("Su compra se ha realizado con éxito");
+        clearCart();
+        renderCart();
+    });
+
 }

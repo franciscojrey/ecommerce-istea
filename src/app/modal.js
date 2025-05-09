@@ -26,7 +26,7 @@ export function showModal(product) {
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="add-to-cart-btn">Agregar al carrito</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="add-to-cart-btn">Agregar al carrito</button>
                 </div>
             </div>
         </div>
